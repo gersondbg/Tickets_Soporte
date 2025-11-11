@@ -8,21 +8,41 @@
 </head>
 
 <body>
-    <h1> Tickets de Soporte</h1>
+    <h1>🎫 Tickets de Soporte</h1>
 
     <section class="formulario">
         <h2>Crear nuevo ticket</h2>
-        <form>
-            <input type="text" placeholder="Nombre del cliente">
-            <input type="text" placeholder="Asunto">
-            <textarea placeholder="Descripción"></textarea>
+        <form id="ticketform">
+            <input type="text" id="nombre" placeholder="Nombre del cliente">
+            <input type="text" id="asunto" placeholder="Asunto">
+            <textarea id="descripcion" placeholder="Descripción"></textarea>
             <button type="submit">Crear ticket</button>
         </form>
+        <p id="mensaje"></p>
     </section>
-    
+
+    <section class="tabla">
+        <h2>Listado de Tickets</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Asunto</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tablaTickets"></tbody>
+        </table>
+    </section>
+
     <script src="formulario-api.service.js"></script>
     <script src="script.js"></script>
-
 </body>
+</html>
+
 
 </html>

@@ -1,23 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form");
-    const mensaje = document.createElement("p");
-    form.after(mensaje);
+    const form = document.getElementById("ticketform");
+    const nombre = document.getElementById("nombre");
+    const asunto = document.getElementById("asunto");
+    const descripcion = document.getElementById("descripcion");
+    const mensaje = document.getElementById("mensaje");
+    const tabla = document.getElementById("tablaTickets");
 
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
+    function renderTabla() {
+        const tickets = TicketAPI.obtenerTickets();
+        tabla.innerHTML = "";
+        tickets.forEach(ticket => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+                <td>${ticket.id}</td>
+                <td>${ticket.nombre}</td>
+                <td>${ticket.asunto}</td>
+                <td>${ticket.descripcion}</td>
+                <td class="estado ${ticket.estado.toLowerCase()}">${ticket.estado}</td>
+                <td>${ticket.fecha}</td>
+                <td>
+                    <button class="cerrar" data-id="${ticket.id}" ${ticket.estado === "Cerrado" ? "disabled" : ""}>
+                        Cerrar
+                    </button>
+                </td>
+            `;
+            tabla.appendChild(fila);
+        });
+    }
 
-        const nombre = form.querySelector('input[placeholder="Nombre del cliente"]').value.trim();
-        const asunto = form.querySelector('input[placeholder="Asunto"]').value.trim();
-        const descripcion = form.querySelector('textarea').value.trim();
-
-        if (!nombre || !asunto || !descripcion) {
-            mensaje.textContent = "⚠️ Por favor, completa todos los campos.";
+    function crearTicket() {
+        if (!nombre.value.trim() || !asunto.value.trim() || !descripcion.value.trim()) {
+            mensaje.textContent = "⚠️ Completa todos los campos.";
             mensaje.style.color = "red";
             return;
         }
 
-        mensaje.textContent = "✅ Ticket creado correctamente.";
+        TicketAPI.crearTicket(nombre.value, asunto.value, descripcion.value);
+        mensaje.textContent = "✅ Ticket creado correctamente. (📧 Correo enviado al cliente)";
         mensaje.style.color = "green";
         form.reset();
+        renderTabla();
+    }
+
+    function cerrarTicket(id) {
+        TicketAPI.actualizarEstado(id, "Cerrado");
+        mensaje.textContent = "📩 Ticket cerrado. Se notificó al cliente.";
+        mensaje.style.color = "gray";
+        renderTabla();
+    }
+
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        crearTicket();
     });
+
+    document.addEventListener("click", e => {
+        if (e.target.classList.contains("cerrar")) {
+            const id = parseInt(e.target.getAttribute("data-id"));
+            cerrarTicket(id);
+        }
+    });
+
+    renderTabla();
 });
