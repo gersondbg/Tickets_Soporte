@@ -49,8 +49,11 @@ Tickets_Soporte/
 
 ---
 
-## 📸 Vista previa
-*(Agrega aquí una captura del formulario y de la tabla de tickets cuando subas las imágenes al repo)*
+
+## 🖼️ Vista previa
+
+![Captura del proyecto](img/captura_proyecto.png)
+
 
 ---
 
